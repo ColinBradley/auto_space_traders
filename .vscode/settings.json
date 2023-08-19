@@ -1,0 +1,6 @@
+{
+    "rust-analyzer.linkedProjects": [
+        "./auto_space_traders_client/Cargo.toml",
+        "./auto_space_traders_sdk/Cargo.toml"
+    ]
+}
