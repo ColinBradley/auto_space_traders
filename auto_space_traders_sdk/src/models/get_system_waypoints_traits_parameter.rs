@@ -12,7 +12,7 @@
 
 
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
-pub struct WaypointTrait {
+pub struct GetSystemWaypointsTraitsParameter {
     /// The unique identifier of the trait.
     #[serde(rename = "symbol")]
     pub symbol: Symbol,
@@ -24,9 +24,9 @@ pub struct WaypointTrait {
     pub description: String,
 }
 
-impl WaypointTrait {
-    pub fn new(symbol: Symbol, name: String, description: String) -> WaypointTrait {
-        WaypointTrait {
+impl GetSystemWaypointsTraitsParameter {
+    pub fn new(symbol: Symbol, name: String, description: String) -> GetSystemWaypointsTraitsParameter {
+        GetSystemWaypointsTraitsParameter {
             symbol,
             name,
             description,

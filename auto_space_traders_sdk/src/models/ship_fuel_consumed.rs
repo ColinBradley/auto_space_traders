@@ -16,7 +16,7 @@
 pub struct ShipFuelConsumed {
     /// The amount of fuel consumed by the most recent transit or action.
     #[serde(rename = "amount")]
-    pub amount: i32,
+    pub amount: u32,
     /// The time at which the fuel was consumed.
     #[serde(rename = "timestamp")]
     pub timestamp: String,
@@ -24,7 +24,7 @@ pub struct ShipFuelConsumed {
 
 impl ShipFuelConsumed {
     /// An object that only shows up when an action has consumed fuel in the process. Shows the fuel consumption data.
-    pub fn new(amount: i32, timestamp: String) -> ShipFuelConsumed {
+    pub fn new(amount: u32, timestamp: String) -> ShipFuelConsumed {
         ShipFuelConsumed {
             amount,
             timestamp,

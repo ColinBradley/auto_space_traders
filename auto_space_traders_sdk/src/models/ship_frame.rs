@@ -25,23 +25,23 @@ pub struct ShipFrame {
     pub description: String,
     /// Condition is a range of 0 to 100 where 0 is completely worn out and 100 is brand new.
     #[serde(rename = "condition", skip_serializing_if = "Option::is_none")]
-    pub condition: Option<i32>,
+    pub condition: Option<u32>,
     /// The amount of slots that can be dedicated to modules installed in the ship. Each installed module take up a number of slots, and once there are no more slots, no new modules can be installed.
     #[serde(rename = "moduleSlots")]
-    pub module_slots: i32,
+    pub module_slots: u32,
     /// The amount of slots that can be dedicated to mounts installed in the ship. Each installed mount takes up a number of points, and once there are no more points remaining, no new mounts can be installed.
     #[serde(rename = "mountingPoints")]
-    pub mounting_points: i32,
+    pub mounting_points: u32,
     /// The maximum amount of fuel that can be stored in this ship. When refueling, the ship will be refueled to this amount.
     #[serde(rename = "fuelCapacity")]
-    pub fuel_capacity: i32,
+    pub fuel_capacity: u32,
     #[serde(rename = "requirements")]
     pub requirements: Box<crate::models::ShipRequirements>,
 }
 
 impl ShipFrame {
     /// The frame of the ship. The frame determines the number of modules and mounting points of the ship, as well as base fuel capacity. As the condition of the frame takes more wear, the ship will become more sluggish and less maneuverable.
-    pub fn new(symbol: Symbol, name: String, description: String, module_slots: i32, mounting_points: i32, fuel_capacity: i32, requirements: crate::models::ShipRequirements) -> ShipFrame {
+    pub fn new(symbol: Symbol, name: String, description: String, module_slots: u32, mounting_points: u32, fuel_capacity: u32, requirements: crate::models::ShipRequirements) -> ShipFrame {
         ShipFrame {
             symbol,
             name,

@@ -28,15 +28,15 @@ pub struct ShipCrew {
     pub rotation: Rotation,
     /// A rough measure of the crew's morale. A higher morale means the crew is happier and more productive. A lower morale means the ship is more prone to accidents.
     #[serde(rename = "morale")]
-    pub morale: i32,
+    pub morale: u32,
     /// The amount of credits per crew member paid per hour. Wages are paid when a ship docks at a civilized waypoint.
     #[serde(rename = "wages")]
-    pub wages: i32,
+    pub wages: u32,
 }
 
 impl ShipCrew {
     /// The ship's crew service and maintain the ship's systems and equipment.
-    pub fn new(current: i32, required: i32, capacity: i32, rotation: Rotation, morale: i32, wages: i32) -> ShipCrew {
+    pub fn new(current: i32, required: i32, capacity: i32, rotation: Rotation, morale: u32, wages: u32) -> ShipCrew {
         ShipCrew {
             current,
             required,

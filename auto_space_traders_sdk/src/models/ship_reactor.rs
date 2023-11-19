@@ -25,17 +25,17 @@ pub struct ShipReactor {
     pub description: String,
     /// Condition is a range of 0 to 100 where 0 is completely worn out and 100 is brand new.
     #[serde(rename = "condition", skip_serializing_if = "Option::is_none")]
-    pub condition: Option<i32>,
+    pub condition: Option<u32>,
     /// The amount of power provided by this reactor. The more power a reactor provides to the ship, the lower the cooldown it gets when using a module or mount that taxes the ship's power.
     #[serde(rename = "powerOutput")]
-    pub power_output: i32,
+    pub power_output: u32,
     #[serde(rename = "requirements")]
     pub requirements: Box<crate::models::ShipRequirements>,
 }
 
 impl ShipReactor {
     /// The reactor of the ship. The reactor is responsible for powering the ship's systems and weapons.
-    pub fn new(symbol: Symbol, name: String, description: String, power_output: i32, requirements: crate::models::ShipRequirements) -> ShipReactor {
+    pub fn new(symbol: Symbol, name: String, description: String, power_output: u32, requirements: crate::models::ShipRequirements) -> ShipReactor {
         ShipReactor {
             symbol,
             name,

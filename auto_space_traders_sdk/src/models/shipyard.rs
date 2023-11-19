@@ -26,16 +26,20 @@ pub struct Shipyard {
     /// The ships that are currently available for purchase at the shipyard.
     #[serde(rename = "ships", skip_serializing_if = "Option::is_none")]
     pub ships: Option<Vec<crate::models::ShipyardShip>>,
+    /// The fee to modify a ship at this shipyard. This includes installing or removing modules and mounts on a ship. In the case of mounts, the fee is a flat rate per mount. In the case of modules, the fee is per slot the module occupies.
+    #[serde(rename = "modificationsFee")]
+    pub modifications_fee: i32,
 }
 
 impl Shipyard {
     /// 
-    pub fn new(symbol: String, ship_types: Vec<crate::models::ShipyardShipTypesInner>) -> Shipyard {
+    pub fn new(symbol: String, ship_types: Vec<crate::models::ShipyardShipTypesInner>, modifications_fee: i32) -> Shipyard {
         Shipyard {
             symbol,
             ship_types,
             transactions: None,
             ships: None,
+            modifications_fee,
         }
     }
 }

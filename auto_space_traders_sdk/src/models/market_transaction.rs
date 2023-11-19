@@ -28,13 +28,13 @@ pub struct MarketTransaction {
     pub r#type: Type,
     /// The number of units of the transaction.
     #[serde(rename = "units")]
-    pub units: i32,
+    pub units: u32,
     /// The price per unit of the transaction.
     #[serde(rename = "pricePerUnit")]
-    pub price_per_unit: i32,
+    pub price_per_unit: u32,
     /// The total price of the transaction.
     #[serde(rename = "totalPrice")]
-    pub total_price: i32,
+    pub total_price: u32,
     /// The timestamp of the transaction.
     #[serde(rename = "timestamp")]
     pub timestamp: String,
@@ -42,7 +42,7 @@ pub struct MarketTransaction {
 
 impl MarketTransaction {
     /// Result of a transaction with a market.
-    pub fn new(waypoint_symbol: String, ship_symbol: String, trade_symbol: String, r#type: Type, units: i32, price_per_unit: i32, total_price: i32, timestamp: String) -> MarketTransaction {
+    pub fn new(waypoint_symbol: String, ship_symbol: String, trade_symbol: String, r#type: Type, units: u32, price_per_unit: u32, total_price: u32, timestamp: String) -> MarketTransaction {
         MarketTransaction {
             waypoint_symbol,
             ship_symbol,

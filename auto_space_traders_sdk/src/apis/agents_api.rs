@@ -69,7 +69,7 @@ pub async fn get_agent(configuration: &configuration::Configuration, agent_symbo
 }
 
 /// Fetch agents details.
-pub async fn get_agents(configuration: &configuration::Configuration, page: Option<i32>, limit: Option<i32>) -> Result<crate::models::GetAgents200Response, Error<GetAgentsError>> {
+pub async fn get_agents(configuration: &configuration::Configuration, page: Option<u32>, limit: Option<u32>) -> Result<crate::models::GetAgents200Response, Error<GetAgentsError>> {
     let local_var_configuration = configuration;
 
     let local_var_client = &local_var_configuration.client;

@@ -16,17 +16,17 @@
 pub struct ShipFuel {
     /// The current amount of fuel in the ship's tanks.
     #[serde(rename = "current")]
-    pub current: i32,
+    pub current: u32,
     /// The maximum amount of fuel the ship's tanks can hold.
     #[serde(rename = "capacity")]
-    pub capacity: i32,
+    pub capacity: u32,
     #[serde(rename = "consumed", skip_serializing_if = "Option::is_none")]
     pub consumed: Option<Box<crate::models::ShipFuelConsumed>>,
 }
 
 impl ShipFuel {
     /// Details of the ship's fuel tanks including how much fuel was consumed during the last transit or action.
-    pub fn new(current: i32, capacity: i32) -> ShipFuel {
+    pub fn new(current: u32, capacity: u32) -> ShipFuel {
         ShipFuel {
             current,
             capacity,

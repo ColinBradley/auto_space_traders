@@ -25,7 +25,7 @@ pub struct ShipMount {
     pub description: Option<String>,
     /// Mounts that have this value, such as mining lasers, denote how powerful this mount's capabilities are.
     #[serde(rename = "strength", skip_serializing_if = "Option::is_none")]
-    pub strength: Option<i32>,
+    pub strength: Option<u32>,
     /// Mounts that have this value denote what goods can be produced from using the mount.
     #[serde(rename = "deposits", skip_serializing_if = "Option::is_none")]
     pub deposits: Option<Vec<Deposits>>,

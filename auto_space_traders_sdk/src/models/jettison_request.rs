@@ -17,11 +17,11 @@ pub struct JettisonRequest {
     pub symbol: crate::models::TradeSymbol,
     /// Amount of units to jettison of this good.
     #[serde(rename = "units")]
-    pub units: i32,
+    pub units: u32,
 }
 
 impl JettisonRequest {
-    pub fn new(symbol: crate::models::TradeSymbol, units: i32) -> JettisonRequest {
+    pub fn new(symbol: crate::models::TradeSymbol, units: u32) -> JettisonRequest {
         JettisonRequest {
             symbol,
             units,

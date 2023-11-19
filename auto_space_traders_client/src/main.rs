@@ -1,19 +1,19 @@
 #![feature(extract_if)]
 #![feature(async_closure)]
 #![feature(let_chains)]
+#![feature(box_into_inner)]
 
 use std::collections::{HashMap, HashSet};
 
 use auto_space_traders_sdk::{
     apis::{
-        agents_api,
+        agents_api::{self},
         configuration::Configuration,
         contracts_api::{self, AcceptContractError},
         fleet_api, systems_api, Error,
     },
     models::{waypoint_trait, Agent, Contract, Ship, TradeSymbol, Waypoint},
 };
-use chrono::{DateTime, FixedOffset};
 use futures::future::join_all;
 use serde::Deserialize;
 
@@ -61,11 +61,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         &waypoints_by_system.values().flatten().collect::<Vec<_>>(),
     );
 
-    let cooldowns_by_ship_symbol = get_cooldowns_by_ship_symbol(&ships, &space_configuration).await;
-
     for ship in ships.iter() {
         let is_full_ish = ship.cargo.capacity - ship.cargo.units < 3;
-        let active_cooldown = cooldowns_by_ship_symbol.get(&ship.symbol);
+        let has_active_cooldown = ship.cooldown.expiration.is_some();
         let has_contract_item = ship
             .cargo
             .inventory
@@ -84,7 +82,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             } else {
                 println!("Turn in items");
             }
-        } else if active_cooldown.is_some() {
+        } else if has_active_cooldown {
             if has_junk {
                 println!("Sell junk");
             } else {
@@ -101,7 +99,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 async fn accept_all_contracts(
     space_configuration: &Configuration,
     contracts: &mut Vec<Contract>,
-    agent: &mut Box<Agent>,
+    agent: &mut Agent,
 ) -> Result<(), Error<AcceptContractError>> {
     for contract in contracts.extract_if(|c| !c.accepted).collect::<Vec<_>>() {
         println!("Accepting contract: {contract:?}");
@@ -110,7 +108,7 @@ async fn accept_all_contracts(
             contracts_api::accept_contract(space_configuration, &contract.id).await?;
 
         *agent = accept_contract_result.data.agent;
-        contracts.push(*accept_contract_result.data.contract);
+        contracts.push(accept_contract_result.data.contract);
     }
 
     Ok(())
@@ -127,10 +125,11 @@ async fn get_waypoints_by_system(
 
     // let space_configuration = &space_configuration;
     let systems_futures = unique_systems.drain().map(async move |system| {
-        let data = systems_api::get_system_waypoints(space_configuration, &system, None, None)
-            .await
-            .expect("Unable to get system waypoints")
-            .data;
+        let data =
+            systems_api::get_system_waypoints(space_configuration, &system, None, None, None)
+                .await
+                .expect("Unable to get system waypoints")
+                .data;
 
         (system, data)
     });
@@ -201,25 +200,25 @@ fn get_mineable_waypoints<'w>(waypoints: &[&'w Waypoint]) -> Vec<&'w Waypoint> {
         .collect()
 }
 
-async fn get_cooldowns_by_ship_symbol(
-    ships: &[Ship],
-    configuration: &Configuration,
-) -> HashMap<String, DateTime<FixedOffset>> {
-    join_all(
-        ships
-            .iter()
-            .map(async move |ship| fleet_api::get_ship_cooldown(configuration, &ship.symbol).await),
-    )
-    .await
-    .drain(..)
-    .filter_map(|c| {
-        c.map(|c| {
-            (
-                c.data.ship_symbol,
-                chrono::DateTime::parse_from_rfc3339(&c.data.expiration).unwrap(),
-            )
-        })
-        .ok()
-    })
-    .collect()
-}
+// async fn get_cooldowns_by_ship_symbol(
+//     ships: &[Ship],
+//     configuration: &Configuration,
+// ) -> HashMap<String, DateTime<FixedOffset>> {
+//     join_all(
+//         ships
+//             .iter()
+//             .map(async move |ship| fleet_api::get_ship_cooldown(configuration, &ship.symbol).await),
+//     )
+//     .await
+//     .drain(..)
+//     .filter_map(|c| {
+//         c.map(|c| {
+//             (
+//                 c.data.ship_symbol,
+//                 chrono::DateTime::parse_from_rfc3339(&c.data.expiration.unwrap()).unwrap(),
+//             )
+//         })
+//         .ok()
+//     })
+//     .collect()
+// }

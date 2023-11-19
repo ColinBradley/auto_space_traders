@@ -25,17 +25,17 @@ pub struct ShipEngine {
     pub description: String,
     /// Condition is a range of 0 to 100 where 0 is completely worn out and 100 is brand new.
     #[serde(rename = "condition", skip_serializing_if = "Option::is_none")]
-    pub condition: Option<i32>,
+    pub condition: Option<u32>,
     /// The speed stat of this engine. The higher the speed, the faster a ship can travel from one point to another. Reduces the time of arrival when navigating the ship.
     #[serde(rename = "speed")]
-    pub speed: i32,
+    pub speed: u32,
     #[serde(rename = "requirements")]
     pub requirements: Box<crate::models::ShipRequirements>,
 }
 
 impl ShipEngine {
     /// The engine determines how quickly a ship travels between waypoints.
-    pub fn new(symbol: Symbol, name: String, description: String, speed: i32, requirements: crate::models::ShipRequirements) -> ShipEngine {
+    pub fn new(symbol: Symbol, name: String, description: String, speed: u32, requirements: crate::models::ShipRequirements) -> ShipEngine {
         ShipEngine {
             symbol,
             name,

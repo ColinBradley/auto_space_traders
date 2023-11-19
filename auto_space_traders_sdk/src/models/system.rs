@@ -21,10 +21,10 @@ pub struct System {
     pub sector_symbol: String,
     #[serde(rename = "type")]
     pub r#type: crate::models::SystemType,
-    /// Position in the universe in the x axis.
+    /// Relative position of the system in the sector in the x axis.
     #[serde(rename = "x")]
     pub x: i32,
-    /// Position in the universe in the y axis.
+    /// Relative position of the system in the sector in the y axis.
     #[serde(rename = "y")]
     pub y: i32,
     /// Waypoints in this system.
