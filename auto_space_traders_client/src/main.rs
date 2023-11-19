@@ -62,7 +62,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     );
 
     for ship in ships.iter() {
-        let is_full_ish = ship.cargo.capacity - ship.cargo.units < 3;
+        println!("Evaluating ship: {}", ship.symbol);
+
+        let has_cargo_capacity = ship.cargo.capacity > 0;
+        let is_full_ish = has_cargo_capacity && ship.cargo.capacity - ship.cargo.units < 3;
         let has_active_cooldown = ship.cooldown.expiration.is_some();
         let has_contract_item = ship
             .cargo
@@ -88,8 +91,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             } else {
                 println!("Idle");
             }
-        } else {
+        } else if has_cargo_capacity {
             println!("Mine");
+        } else {
+            println!("Buy Stuff / Explore / Idle?");
         }
     }
 
@@ -199,26 +204,3 @@ fn get_mineable_waypoints<'w>(waypoints: &[&'w Waypoint]) -> Vec<&'w Waypoint> {
         .copied()
         .collect()
 }
-
-// async fn get_cooldowns_by_ship_symbol(
-//     ships: &[Ship],
-//     configuration: &Configuration,
-// ) -> HashMap<String, DateTime<FixedOffset>> {
-//     join_all(
-//         ships
-//             .iter()
-//             .map(async move |ship| fleet_api::get_ship_cooldown(configuration, &ship.symbol).await),
-//     )
-//     .await
-//     .drain(..)
-//     .filter_map(|c| {
-//         c.map(|c| {
-//             (
-//                 c.data.ship_symbol,
-//                 chrono::DateTime::parse_from_rfc3339(&c.data.expiration.unwrap()).unwrap(),
-//             )
-//         })
-//         .ok()
-//     })
-//     .collect()
-// }
